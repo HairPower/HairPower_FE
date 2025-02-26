@@ -1,7 +1,7 @@
 import React from "react";
 import "./ResultPage.css";
 
-function ResultPage({ currentScreen, file, onBackToUpload }) {
+function ResultPage({ currentScreen, file, onBackToUpload, onGoToChat }) {
 	// 현재 화면에 따른 클래스 계산
 	const getResultContainerClass = () => {
 		if (currentScreen === "result") return "slide-in";
@@ -42,7 +42,9 @@ function ResultPage({ currentScreen, file, onBackToUpload }) {
 					<button className="back-button" onClick={onBackToUpload}>
 						처음으로 돌아가기
 					</button>
-					<button className="share-button">채팅하기</button>
+					<button className="chat-button" onClick={onGoToChat}>
+						채팅으로 이동하기
+					</button>
 				</div>
 			</div>
 		</div>

@@ -23,46 +23,30 @@ html {
 	z-index: -1;
 }
 
-.start-screen {
+/* background.css */
+.app-background {
+	position: fixed;
+	top: 0;
+	left: 0;
 	width: 100%;
-	height: 100vh;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
+	height: 100%;
+	z-index: -1; /* 배경을 뒤로 보내서 다른 컨텐츠가 위에 표시되도록 */
+	overflow: hidden;
+}
+
+.app-background svg {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* 백그라운드 위에 놓이는 콘텐츠에 대한 스타일 */
+.content-container {
 	position: relative;
+	z-index: 1;
 }
 
-.start-button-container {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	z-index: 10;
-}
-
-.start-button {
-	padding: 12px 24px;
-	font-size: 18px;
-	background-color: white;
-	color: black;
-	border: none;
-	border-radius: 30px;
-	cursor: pointer;
-	transition: background-color 0.3s;
-	min-width: 120px;
-}
-
-.start-button:hover {
-	background-color: #f0f0f0;
-}
-
-.next-screen {
-	width: 100%;
-	height: 100vh;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	background-color: #f5f5f5;
+/* 앱 전체에 적용될 기본 배경색 (SVG가 로드되기 전 또는 오류 시) */
+body {
+	background-color: #f9f5f0; /* 요청한 배경색과 일치하게 설정 */
 }

@@ -1,0 +1,164 @@
+.upload-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	max-width: 600px;
+	padding: 2rem;
+	border-radius: 12px;
+}
+
+.upload-area-container {
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+.upload-area {
+	border: 2px dashed #ccc;
+	padding: 40px;
+	text-align: center;
+	cursor: pointer;
+	border-radius: 8px;
+	background-color: white;
+	transition: all 0.3s ease;
+}
+
+.upload-area:hover {
+	background-color: #f8f8f8;
+	border-color: #3498db;
+	transform: translateY(-3px);
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+}
+
+.upload-icon {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 15px;
+	color: #666;
+}
+
+.upload-text {
+	color: #666;
+	font-size: 1rem;
+}
+
+.upload-highlight {
+	color: #3498db;
+	font-weight: bold;
+}
+
+.file-name {
+	margin-top: 15px;
+	padding: 8px 15px;
+	background-color: #f0f8ff;
+	border-radius: 4px;
+	color: #3498db;
+	font-size: 0.9rem;
+	word-break: break-all;
+}
+
+.toggle-container {
+	display: flex;
+	align-items: center;
+	margin: 20px 0;
+}
+
+.toggle-text {
+	margin-right: 10px;
+	font-size: 0.9rem;
+	color: #666;
+}
+
+.toggle-switch {
+	position: relative;
+	width: 60px;
+	height: 30px;
+	background-color: #ccc;
+	border-radius: 15px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.toggle-switch.active {
+	background-color: #3498db;
+}
+
+.toggle-thumb {
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	width: 24px;
+	height: 24px;
+	background-color: white;
+	border-radius: 50%;
+	transition: transform 0.3s ease;
+}
+
+.toggle-switch.active .toggle-thumb {
+	transform: translateX(30px);
+}
+
+.buttons-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	margin-top: 20px;
+}
+
+.submit-button {
+	width: 100%;
+	padding: 12px 30px;
+	background-color: #3498db;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	font-size: 1rem;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.submit-button:hover {
+	background-color: #2980b9;
+}
+
+.submit-button:disabled {
+	background-color: #ccc;
+	cursor: not-allowed;
+}
+
+.back-button {
+	margin-top: 12px;
+	padding: 8px 20px;
+	background-color: transparent;
+	color: #777;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 0.9rem;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.back-button:hover {
+	background-color: #f0f0f0;
+	color: #555;
+}
+
+.back-button-container {
+	width: 100%;
+	margin-bottom: 15px;
+}
+
+.back-button {
+	background: none;
+	border: none;
+	color: #666;
+	font-size: 0.9rem;
+	cursor: pointer;
+	padding: 5px 0;
+}
+
+.back-button:hover {
+	color: #333;
+}

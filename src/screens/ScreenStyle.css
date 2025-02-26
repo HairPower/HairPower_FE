@@ -1,0 +1,21 @@
+/* StartScreen.css */
+
+/* UploadScreen.css */
+
+/* LoadingScreen.css */
+
+/* ResultScreen.css */
+.result-screen {
+	background-color: rgba(245, 245, 245, 0.8);
+}
+
+.result-container {
+	width: 90%;
+	max-width: 800px;
+	background-color: white;
+	border-radius: 8px;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+}
+
+/* ChattingScreen.css */

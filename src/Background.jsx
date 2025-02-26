@@ -11,9 +11,13 @@ function Background() {
 					x2="100%"
 					y2="100%"
 				>
-					<stop offset="0%" stopColor="#F5E8DF" />
-					<stop offset="50%" stopColor="#EDD6C0" />
-					<stop offset="100%" stopColor="#E6C9AC" />
+					{/* 메인 배경 그라데이션을 #f9f5f0 색상 기반으로 변경 */}
+					<stop offset="0%" stopColor="#FFFFFF" />{" "}
+					{/* 조금 더 밝은 톤 */}
+					<stop offset="50%" stopColor="#f9f5f0" />{" "}
+					{/* 요청한 메인 색상 */}
+					<stop offset="100%" stopColor="#f0ece7" />{" "}
+					{/* 조금 더 어두운 톤 */}
 				</linearGradient>
 
 				<radialGradient
@@ -24,8 +28,9 @@ function Background() {
 					fx="30%"
 					fy="25%"
 				>
-					<stop offset="0%" stopColor="#F2D9C8" stopOpacity="0.6" />
-					<stop offset="100%" stopColor="#F2D9C8" stopOpacity="0" />
+					<stop offset="0%" stopColor="#fcfaf5" stopOpacity="0.6" />{" "}
+					{/* 밝은 강조색 */}
+					<stop offset="100%" stopColor="#fcfaf5" stopOpacity="0" />
 				</radialGradient>
 
 				<radialGradient
@@ -36,8 +41,9 @@ function Background() {
 					fx="70%"
 					fy="60%"
 				>
-					<stop offset="0%" stopColor="#DACBBE" stopOpacity="0.5" />
-					<stop offset="100%" stopColor="#DACBBE" stopOpacity="0" />
+					<stop offset="0%" stopColor="#f0ece7" stopOpacity="0.5" />{" "}
+					{/* 어두운 강조색 */}
+					<stop offset="100%" stopColor="#f0ece7" stopOpacity="0" />
 				</radialGradient>
 
 				<radialGradient
@@ -48,8 +54,9 @@ function Background() {
 					fx="40%"
 					fy="80%"
 				>
-					<stop offset="0%" stopColor="#F8E7D5" stopOpacity="0.4" />
-					<stop offset="100%" stopColor="#F8E7D5" stopOpacity="0" />
+					<stop offset="0%" stopColor="#fdfbf6" stopOpacity="0.4" />{" "}
+					{/* 밝은 강조색 */}
+					<stop offset="100%" stopColor="#fdfbf6" stopOpacity="0" />
 				</radialGradient>
 
 				<filter
@@ -161,7 +168,7 @@ function Background() {
 				cx="100"
 				cy="200"
 				r="30"
-				fill="#F8E2CF"
+				fill="#fdfbf6"
 				opacity="0.6"
 				filter="url(#softBlur)"
 			>
@@ -181,7 +188,7 @@ function Background() {
 				cx="500"
 				cy="450"
 				r="40"
-				fill="#E4D4C8"
+				fill="#f1ede8"
 				opacity="0.5"
 				filter="url(#softBlur)"
 			>
@@ -201,7 +208,7 @@ function Background() {
 				cx="350"
 				cy="700"
 				r="35"
-				fill="#F9E6D2"
+				fill="#fcf8f3"
 				opacity="0.7"
 				filter="url(#softBlur)"
 			>
@@ -221,7 +228,7 @@ function Background() {
 				cx="150"
 				cy="600"
 				r="25"
-				fill="#E8D8C3"
+				fill="#f3efe9"
 				opacity="0.6"
 				filter="url(#softBlur)"
 			>
@@ -241,7 +248,7 @@ function Background() {
 				cx="450"
 				cy="150"
 				r="35"
-				fill="#F2E2D2"
+				fill="#f9f5f0"
 				opacity="0.5"
 				filter="url(#softBlur)"
 			>
@@ -261,7 +268,7 @@ function Background() {
 				cx="250"
 				cy="800"
 				r="30"
-				fill="#F5DBC8"
+				fill="#faf6f1"
 				opacity="0.6"
 				filter="url(#softBlur)"
 			>

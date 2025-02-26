@@ -1,0 +1,79 @@
+/* Add these styles to your StartScreen.css file */
+
+.typing-text {
+	min-height: 1.5em; /* Prevents layout shift during typing */
+	position: relative;
+	font-family: "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif;
+	font-weight: 400;
+	margin-bottom: 2rem;
+}
+
+.cursor {
+	display: inline-block;
+	width: 2px;
+	margin-left: 2px;
+	animation: blink 1s step-end infinite;
+	color: #8b5a2b; /* Match your brand color */
+	font-weight: 100;
+}
+
+.cursor.visible {
+	opacity: 1;
+}
+
+.cursor.hidden {
+	opacity: 0;
+}
+
+/* Fade in the button after text is complete */
+.start-button {
+	transition: opacity 0.5s, transform 0.3s;
+}
+
+.start-button:disabled {
+	opacity: 0.6;
+	transform: translateY(10px);
+	cursor: default;
+}
+
+.start-button:not(:disabled) {
+	opacity: 1;
+	transform: translateY(0);
+	animation: buttonFadeIn 0.5s ease-out;
+}
+
+@keyframes buttonFadeIn {
+	from {
+		opacity: 0.6;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Additional styles to enhance your start screen */
+.start-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	padding: 2rem;
+	max-width: 80%;
+	margin: 0 auto;
+}
+
+.start-content h1 {
+	font-size: 2.5rem;
+	margin-bottom: 1.5rem;
+	color: #8b5a2b; /* Match your brand color */
+	letter-spacing: 1px;
+}
+
+.start-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}

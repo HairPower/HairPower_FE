@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import "./LoadingPage.css";
+import "./ParticleSwarm.css";
 
 const ParticleSwarm = () => {
 	const canvasRef = useRef(null);
