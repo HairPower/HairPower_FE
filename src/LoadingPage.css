@@ -1,0 +1,34 @@
+/* ParticleSwarm.css */
+
+.particle-swarm-container {
+	width: 100%;
+	height: 100vh;
+	background-color: #e8d5c4;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.particle-canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
+
+.loading-text {
+	position: relative;
+	z-index: 2;
+	font-size: 18px;
+	color: #8b5a2b;
+	margin-top: 20px;
+	font-family: "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif;
+	font-weight: 500;
+	background-color: rgba(232, 213, 196, 0.7);
+	padding: 10px 20px;
+	border-radius: 20px;
+}
