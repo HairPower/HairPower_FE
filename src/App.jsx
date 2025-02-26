@@ -5,20 +5,24 @@ import ChattingScreen from "./screens/ChattingScreen";
 import LoadingScreen from "./screens/LoadingScreen";
 import ResultScreen from "./screens/ResultScreen";
 import StartScreen from "./screens/StartScreen";
+import StoryScreen from "./screens/StoryScreen"; // 스토리 스크린 컴포넌트
 import UploadScreen from "./screens/UploadScreen";
 
 function App() {
-	// Screen state management with a single current screen
+	// Screen state management
 	const [currentScreen, setCurrentScreen] = useState("start");
 	const [transitionDirection, setTransitionDirection] = useState("forward");
 	const [isTransitioning, setIsTransitioning] = useState(false);
 	const [submissionResult, setSubmissionResult] = useState(null);
 
+	// 스토리 화면 표시 여부
+	const [showStory, setShowStory] = useState(false);
+
 	// User input states
 	const [file, setFile] = useState(null);
-	const [toggleValue, setToggleValue] = useState(false); // 토글 상태 추가
+	const [toggleValue, setToggleValue] = useState(false);
 
-	// Screen order definition
+	// Screen order definition - Result와 Story 두 화면 모두 유지
 	const screenOrder = ["start", "upload", "loading", "result", "chatting"];
 
 	// Navigate to a specific screen
@@ -26,7 +30,7 @@ function App() {
 		// Prevent navigation if already on target screen or during transition
 		if (currentScreen === screen || isTransitioning) return;
 
-		// Determine direction (forward or backward) based on screen order
+		// Determine direction
 		const currentIndex = screenOrder.indexOf(currentScreen);
 		const targetIndex = screenOrder.indexOf(screen);
 		const direction = targetIndex > currentIndex ? "forward" : "backward";
@@ -35,36 +39,39 @@ function App() {
 		setIsTransitioning(true);
 		setTransitionDirection(direction);
 
-		// Change screen after a small delay (for browser rendering)
+		// Change screen after a small delay
 		setTimeout(() => {
 			setCurrentScreen(screen);
 
 			// End transition after animation completes
 			setTimeout(() => {
 				setIsTransitioning(false);
-			}, 600); // Match CSS transition duration
+			}, 600);
 		}, 50);
 	};
 
 	// 앱이 마운트된 후 초기 화면 설정
 	useEffect(() => {
-		// DOM이 완전히 렌더링된 후 화면 상태 설정
 		const timer = setTimeout(() => {
-			// 강제 리플로우로 브라우저 렌더링 동기화
 			document.body.offsetHeight;
-
-			// 모든 화면이 정확한 초기 위치에 있도록 확인
 			setCurrentScreen("start");
 		}, 100);
 
 		return () => clearTimeout(timer);
 	}, []);
 
-	// Convenience navigation functions
+	// Navigation functions
 	const goToStart = () => navigateTo("start");
 	const goToUpload = () => navigateTo("upload");
-	const goToResult = () => navigateTo("result");
+	const goToResult = () => {
+		navigateTo("result");
+		setShowStory(false); // 결과 화면으로 이동 시 스토리 닫기
+	};
 	const goToChat = () => navigateTo("chatting");
+
+	// 스토리 표시/숨김 함수
+	const openStory = () => setShowStory(true);
+	const closeStory = () => setShowStory(false);
 
 	// Special case for loading screen with auto-advance
 	const goToLoading = () => {
@@ -83,9 +90,13 @@ function App() {
 				},
 			});
 
-			// 전환 중이 아닌 경우에만 결과 화면으로 전환
+			// 전환 중이 아닌 경우에만 스토리 화면으로 전환
 			if (!isTransitioning) {
-				navigateTo("result");
+				navigateTo("result"); // 결과 화면으로 이동
+				// 결과 화면 로드 후 스토리 자동 표시
+				setTimeout(() => {
+					openStory();
+				}, 700); // 화면 전환 애니메이션 이후에 표시
 			}
 		}, 5000);
 	};
@@ -102,7 +113,6 @@ function App() {
 
 	const handleSubmit = () => {
 		if (file && !isTransitioning) {
-			// 이전에 정의되지 않은 onSubmit() 대신 goToLoading() 호출
 			goToLoading();
 		} else {
 			console.warn("제출 조건 미충족", {
@@ -117,9 +127,13 @@ function App() {
 		goToUpload();
 	};
 
+	// 스토리에서 결과 화면으로 돌아가는 함수
+	const handleStoryComplete = () => {
+		closeStory(); // 스토리 닫기만 하고 결과 화면은 이미 표시되어 있음
+	};
+
 	// Determine screen position class
 	const getScreenClass = (screenName) => {
-		// Current screen is always active and centered
 		if (screenName === currentScreen) {
 			return "screen screen-active";
 		}
@@ -127,14 +141,11 @@ function App() {
 		const currentIndex = screenOrder.indexOf(currentScreen);
 		const screenIndex = screenOrder.indexOf(screenName);
 
-		// Position based on screen order
 		if (transitionDirection === "forward") {
-			// In forward motion: screens before current go left, after go right
 			return screenIndex < currentIndex
 				? "screen screen-left"
 				: "screen screen-right";
 		} else {
-			// In backward motion: screens before current go left, after go right
 			return screenIndex < currentIndex
 				? "screen screen-left"
 				: "screen screen-right";
@@ -150,7 +161,7 @@ function App() {
 
 			{/* Screen container */}
 			<div className="screens-container">
-				{/* All screens are always rendered, but positioned with CSS */}
+				{/* All screens */}
 				<StartScreen
 					className={getScreenClass("start")}
 					onStartClick={goToUpload}
@@ -160,8 +171,8 @@ function App() {
 					className={getScreenClass("upload")}
 					file={file}
 					onFileChange={handleFileChange}
-					toggleValue={toggleValue} // 토글 상태 전달
-					onToggleChange={handleToggleChange} // 토글 변경 핸들러 전달
+					toggleValue={toggleValue}
+					onToggleChange={handleToggleChange}
 					onSubmit={handleSubmit}
 					onBackClick={goToStart}
 					isTransitioning={isTransitioning}
@@ -173,9 +184,10 @@ function App() {
 					className={getScreenClass("result")}
 					file={file}
 					gender={toggleValue}
-					submissionResult={submissionResult} // 결과 데이터 전달
+					submissionResult={submissionResult}
 					onBackClick={resetUpload}
 					onChatClick={goToChat}
+					onStoryClick={openStory} // 스토리 다시 보기 기능
 				/>
 
 				<ChattingScreen
@@ -183,6 +195,16 @@ function App() {
 					onBackClick={goToResult}
 				/>
 			</div>
+
+			{/* Story Screen (overlay) */}
+			{showStory && (
+				<StoryScreen
+					className="story-overlay"
+					onBackClick={closeStory}
+					onComplete={handleStoryComplete}
+					analysisData={submissionResult}
+				/>
+			)}
 		</div>
 	);
 }

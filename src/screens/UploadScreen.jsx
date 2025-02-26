@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import "./UploadScreen.css";
 
 const UploadScreen = ({
@@ -11,6 +11,7 @@ const UploadScreen = ({
 	onBackClick,
 	isTransitioning,
 }) => {
+	const [hasSelected, setHasSelected] = useState(false);
 	const fileInputRef = useRef(null);
 
 	const handleFileChange = (e) => {
@@ -36,6 +37,7 @@ const UploadScreen = ({
 
 	const handleToggleChange = () => {
 		onToggleChange(!toggleValue);
+		setHasSelected(true);
 	};
 
 	// 이 함수를 수정하여 이벤트 매개변수를 제거
@@ -96,13 +98,24 @@ const UploadScreen = ({
 
 				<div className="toggle-container">
 					<div className="toggle-text">
-						{toggleValue ? "Female" : "Male"}
+						{hasSelected
+							? toggleValue
+								? "Female"
+								: "Male"
+							: "Choose your gender"}
 					</div>
 					<div
 						className={`toggle-switch ${
 							toggleValue ? "active" : ""
 						}`}
 						onClick={handleToggleChange}
+						style={{
+							backgroundColor: hasSelected
+								? toggleValue
+									? "#ffcdc5"
+									: "#7cb9e8" // Pink for female, blue for male
+								: "#ccc", // Gray for initial state
+						}}
 					>
 						<div className="toggle-thumb"></div>
 					</div>
@@ -113,6 +126,14 @@ const UploadScreen = ({
 						className="submit-button"
 						onClick={handleSubmit}
 						disabled={!file || isTransitioning}
+						style={{
+							backgroundColor:
+								!file || isTransitioning
+									? "#ccc"
+									: toggleValue
+									? "#ffcdc5"
+									: "#7cb9e8",
+						}}
 					>
 						{isTransitioning ? "처리 중..." : "제출하기"}
 					</button>

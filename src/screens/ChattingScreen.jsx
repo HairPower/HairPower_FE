@@ -114,13 +114,17 @@ const ChattingScreen = ({ className, onBackClick }) => {
 
 	// 메시지가 변경되거나 활성화 상태가 변경될 때만 스크롤 수행
 	useEffect(() => {
+		const messagesContainer = document.querySelector(".messages-container");
+		// if (messagesContainer) {
+		// 	messagesContainer.scrollTop = messagesContainer.scrollHeight;
+		// }
 		// 컴포넌트가 활성화된 상태일 때만 스크롤 수행
-		if (className && className.includes("screen-active")) {
-			console.log("채팅 화면이 활성화되어 스크롤 실행");
-			scrollToBottom();
-		} else {
-			console.log("채팅 화면이 비활성화 상태이므로 스크롤 건너뜀");
-		}
+		// if (className && className.includes("screen-active")) {
+		// 	console.log("채팅 화면이 활성화되어 스크롤 실행");
+		// 	scrollToBottom();
+		// } else {
+		// 	console.log("채팅 화면이 비활성화 상태이므로 스크롤 건너뜀");
+		// }
 	}, [messages, scrollToBottom, className]);
 
 	// 컴포넌트 마운트/언마운트 시 로깅 추가 (디버깅용)

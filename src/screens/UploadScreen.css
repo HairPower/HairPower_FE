@@ -71,17 +71,18 @@
 }
 
 .toggle-switch {
-	position: relative;
+	position: absolute;
+	right: 60px;
 	width: 60px;
 	height: 30px;
-	background-color: #ccc;
+	background-color: #d1eaf5;
 	border-radius: 15px;
 	cursor: pointer;
 	transition: background-color 0.3s ease;
 }
 
 .toggle-switch.active {
-	background-color: #3498db;
+	background-color: #ffcdc5;
 }
 
 .toggle-thumb {
