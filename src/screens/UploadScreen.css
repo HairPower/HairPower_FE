@@ -72,7 +72,7 @@
 
 .toggle-switch {
 	position: absolute;
-	right: 60px;
+	right: calc(20vw - 40px);
 	width: 60px;
 	height: 30px;
 	background-color: #d1eaf5;

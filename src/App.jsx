@@ -80,13 +80,13 @@ function App() {
 			// 결과 데이터 설정
 			setSubmissionResult({
 				status: "성공",
-				type: "음성 분석",
+				type: "얼굴형 분석",
 				fileName: file ? file.name : "알 수 없음",
 				gender: toggleValue ? "여성" : "남성",
 				결과: "분석이 완료되었습니다.",
 				세부사항: {
-					신뢰도: "83%",
-					추천사항: "후속 분석 권장",
+					신뢰도: "???",
+					추천사항: "???",
 				},
 			});
 

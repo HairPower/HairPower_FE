@@ -1,22 +1,20 @@
 import React, { useRef, useState } from "react";
 import "./UploadScreen.css";
 
-const UploadScreen = ({
-	className,
-	file,
-	onFileChange,
-	toggleValue,
-	onToggleChange,
-	onSubmit,
-	onBackClick,
-	isTransitioning,
-}) => {
+const UploadScreen = ({ className, onBackClick }) => {
+	const [file, setFile] = useState(null);
+	const [toggleValue, setToggleValue] = useState(false); // false는 남성, true는 여성
 	const [hasSelected, setHasSelected] = useState(false);
+	const [isTransitioning, setIsTransitioning] = useState(false);
+	const [result, setResult] = useState(null);
+	const [error, setError] = useState(null);
 	const fileInputRef = useRef(null);
 
 	const handleFileChange = (e) => {
 		if (e.target.files && e.target.files[0]) {
-			onFileChange(e.target.files[0]);
+			setFile(e.target.files[0]);
+			setResult(null);
+			setError(null);
 		}
 	};
 
@@ -31,20 +29,87 @@ const UploadScreen = ({
 	const handleDrop = (e) => {
 		e.preventDefault();
 		if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-			onFileChange(e.dataTransfer.files[0]);
+			setFile(e.dataTransfer.files[0]);
+			setResult(null);
+			setError(null);
 		}
 	};
 
 	const handleToggleChange = () => {
-		onToggleChange(!toggleValue);
+		setToggleValue(!toggleValue);
 		setHasSelected(true);
 	};
 
-	// 이 함수를 수정하여 이벤트 매개변수를 제거
-	const handleSubmit = () => {
-		if (file && !isTransitioning) {
-			onSubmit(); // 부모 컴포넌트에서 전달받은 onSubmit 호출
+	// API 호출을 처리하는 함수 =====================================
+	// API 호출을 처리하는 함수
+	const handleSubmit = async () => {
+		if (!file || isTransitioning) return;
+
+		setIsTransitioning(true);
+		setError(null);
+
+		// FormData 객체 생성 및 데이터 추가
+		const formData = new FormData();
+		formData.append("photo", file);
+		formData.append("gender", toggleValue ? "female" : "male");
+
+		try {
+			const response = await fetch("/api/user/upload-photo", {
+				method: "POST",
+				body: formData,
+			});
+
+			// 응답 본문 텍스트를 먼저 확인
+			const responseText = await response.text();
+
+			// 응답이 비어있지 않은 경우에만 JSON으로 파싱
+			let data;
+			if (responseText) {
+				try {
+					data = JSON.parse(responseText);
+				} catch (parseError) {
+					console.error("JSON 파싱 오류:", parseError);
+					console.log("서버 응답 내용:", responseText);
+					throw new Error(
+						"서버에서 유효하지 않은 응답 형식을 반환했습니다."
+					);
+				}
+			} else {
+				throw new Error("서버에서 빈 응답을 반환했습니다.");
+			}
+
+			if (!response.ok) {
+				throw new Error(
+					data?.message || "업로드 중 오류가 발생했습니다."
+				);
+			}
+
+			// 성공적인 응답 처리
+			setResult(data);
+		} catch (err) {
+			setError(err.message || "서버와 통신 중 오류가 발생했습니다.");
+			console.error("업로드 오류:", err);
+		} finally {
+			setIsTransitioning(false);
 		}
+	};
+
+	// 결과 또는 오류 메시지 표시 컴포넌트
+	const renderResultOrError = () => {
+		if (error) {
+			return <div className="error-message">{error}</div>;
+		}
+
+		if (result) {
+			return (
+				<div className="result-container">
+					<h3>분석 결과</h3>
+					<pre>{JSON.stringify(result, null, 2)}</pre>
+				</div>
+			);
+		}
+
+		return null;
 	};
 
 	return (
@@ -138,6 +203,9 @@ const UploadScreen = ({
 						{isTransitioning ? "처리 중..." : "제출하기"}
 					</button>
 				</div>
+
+				{/* 결과 또는 오류 메시지 표시 */}
+				{renderResultOrError()}
 			</div>
 		</div>
 	);

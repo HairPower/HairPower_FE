@@ -182,7 +182,7 @@
 }
 
 .input-wrapper input {
-	width: 100%;
+	width: 90%;
 	padding: 14px 18px; /* Increased padding */
 	border: 1px solid rgba(139, 90, 43, 0.3); /* Brand color border with opacity */
 	border-radius: 24px;
