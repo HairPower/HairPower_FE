@@ -13,14 +13,10 @@ const UploadScreen = ({
 }) => {
 	const [hasSelected, setHasSelected] = useState(false);
 	const fileInputRef = useRef(null);
+
 	const handleFileChange = (e) => {
 		if (e.target.files && e.target.files[0]) {
-			const selectedFile = e.target.files[0];
-
-			// 부모 컴포넌트에 파일 변경 알림
-			if (onFileChange) {
-				onFileChange(selectedFile);
-			}
+			onFileChange(e.target.files[0]);
 		}
 	};
 
@@ -35,29 +31,19 @@ const UploadScreen = ({
 	const handleDrop = (e) => {
 		e.preventDefault();
 		if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-			const selectedFile = e.dataTransfer.files[0];
-
-			// 부모 컴포넌트에 파일 변경 알림
-			if (onFileChange) {
-				onFileChange(selectedFile);
-			}
+			onFileChange(e.dataTransfer.files[0]);
 		}
 	};
 
 	const handleToggleChange = () => {
-		const newValue = !toggleValue;
+		onToggleChange(!toggleValue);
 		setHasSelected(true);
-
-		// 부모 컴포넌트에 토글 변경 알림
-		if (onToggleChange) {
-			onToggleChange(newValue);
-		}
 	};
 
-	// 제출 버튼 클릭 핸들러 - 이제 모든 처리는 부모 컴포넌트에서 수행
+	// 이 함수를 수정하여 이벤트 매개변수를 제거
 	const handleSubmit = () => {
-		if (file && hasSelected && onSubmit) {
-			onSubmit();
+		if (file && !isTransitioning) {
+			onSubmit(); // 부모 컴포넌트에서 전달받은 onSubmit 호출
 		}
 	};
 
@@ -105,7 +91,6 @@ const UploadScreen = ({
 							ref={fileInputRef}
 							onChange={handleFileChange}
 							style={{ display: "none" }}
-							accept="image/*"
 						/>
 						{file && <p className="file-name">{file.name}</p>}
 					</div>
@@ -113,7 +98,7 @@ const UploadScreen = ({
 
 				<div className="toggle-container">
 					<div className="toggle-text">
-						{hasSelected || toggleValue !== false
+						{hasSelected
 							? toggleValue
 								? "Female"
 								: "Male"
@@ -125,12 +110,11 @@ const UploadScreen = ({
 						}`}
 						onClick={handleToggleChange}
 						style={{
-							backgroundColor:
-								hasSelected || toggleValue !== false
-									? toggleValue
-										? "#ffcdc5"
-										: "#7cb9e8" // Pink for female, blue for male
-									: "#ccc", // Gray for initial state
+							backgroundColor: hasSelected
+								? toggleValue
+									? "#ffcdc5"
+									: "#7cb9e8" // Pink for female, blue for male
+								: "#ccc", // Gray for initial state
 						}}
 					>
 						<div className="toggle-thumb"></div>
@@ -141,10 +125,10 @@ const UploadScreen = ({
 					<button
 						className="submit-button"
 						onClick={handleSubmit}
-						disabled={!file || !hasSelected}
+						disabled={!file || isTransitioning}
 						style={{
 							backgroundColor:
-								!file || !hasSelected
+								!file || isTransitioning
 									? "#ccc"
 									: toggleValue
 									? "#ffcdc5"

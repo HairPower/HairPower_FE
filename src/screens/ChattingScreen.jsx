@@ -2,20 +2,80 @@ import { ArrowLeft, Send, StopCircle } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./ChattingScreen.css";
 
+// API 기본 설정
+const API_BASE_URL = "https://your-backend-api.com"; // 실제 백엔드 API URL로 변경해주세요
+
 // AI 서비스 인터페이스
 const AIService = {
-	async generateResponse(messages) {
-		// 실제 API 호출 대신 가상의 응답을 생성하는 함수
-		return new Promise((resolve) => {
-			// 1~3초 사이의 랜덤한 시간 후에 응답 반환 (실제 API 호출 시뮬레이션)
-			setTimeout(() => {
-				resolve({
+	async generateResponse(messages, signal) {
+		try {
+			// 실제 API 호출
+			const response = await fetch(`${API_BASE_URL}/api/chat`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					messages: messages,
+				}),
+				signal: signal, // AbortController의 signal을 전달하여 요청 취소 기능 구현
+			});
+
+			if (!response.ok) {
+				throw new Error(`API 요청 실패: ${response.status}`);
+			}
+
+			const data = await response.json();
+			return {
+				role: "assistant",
+				content:
+					data.response ||
+					"죄송합니다, 응답을 생성하는 중에 오류가 발생했습니다.",
+			};
+		} catch (error) {
+			// AbortError는 사용자가 의도적으로 중단한 것이므로 별도 처리
+			if (error.name === "AbortError") {
+				console.log("사용자에 의해 응답 생성이 중단되었습니다.");
+				return {
 					role: "assistant",
-					content:
-						"안녕하세요! 분석 결과에 대해 어떤 도움이 필요하신가요? 자세한 설명이나 추가 질문이 있으시면 말씀해주세요.",
-				});
-			}, 1000 + Math.random() * 2000);
-		});
+					content: "응답 생성이 중단되었습니다.",
+				};
+			}
+
+			console.error("API 요청 중 오류 발생:", error);
+			throw error;
+		}
+	},
+
+	// 사용자 메시지 전송 함수 추가
+	async sendUserMessage(userMessage) {
+		try {
+			// 사용자 메시지만 별도로 서버에 기록
+			const response = await fetch(`${API_BASE_URL}/api/user-messages`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					message: userMessage.content,
+					timestamp: new Date().toISOString(),
+					// 필요시 사용자 식별 정보 추가
+					// userId: "user-id",
+					// sessionId: "session-id"
+				}),
+			});
+
+			if (!response.ok) {
+				throw new Error(`사용자 메시지 전송 실패: ${response.status}`);
+			}
+
+			const data = await response.json();
+			console.log("사용자 메시지 전송 성공:", data);
+			return true;
+		} catch (error) {
+			console.error("사용자 메시지 전송 중 오류:", error);
+			return false;
+		}
 	},
 };
 
@@ -112,20 +172,10 @@ const ChattingScreen = ({ className, onBackClick }) => {
 		}
 	}, [className]);
 
-	// 메시지가 변경되거나 활성화 상태가 변경될 때만 스크롤 수행
+	// 메시지가 변경되면 스크롤 실행
 	useEffect(() => {
-		const messagesContainer = document.querySelector(".messages-container");
-		// if (messagesContainer) {
-		// 	messagesContainer.scrollTop = messagesContainer.scrollHeight;
-		// }
-		// 컴포넌트가 활성화된 상태일 때만 스크롤 수행
-		// if (className && className.includes("screen-active")) {
-		// 	console.log("채팅 화면이 활성화되어 스크롤 실행");
-		// 	scrollToBottom();
-		// } else {
-		// 	console.log("채팅 화면이 비활성화 상태이므로 스크롤 건너뜀");
-		// }
-	}, [messages, scrollToBottom, className]);
+		scrollToBottom();
+	}, [messages, scrollToBottom]);
 
 	// 컴포넌트 마운트/언마운트 시 로깅 추가 (디버깅용)
 	useEffect(() => {
@@ -133,31 +183,54 @@ const ChattingScreen = ({ className, onBackClick }) => {
 
 		return () => {
 			console.log("ChattingScreen 언마운트됨");
+			// 컴포넌트 언마운트 시 진행 중인 요청 취소
+			if (abortControllerRef.current) {
+				abortControllerRef.current.abort();
+			}
 		};
 	}, [className]);
 
 	const handleSendMessage = async (userText) => {
-		// 사용자 메시지 추가
+		// 사용자 메시지 생성
 		const userMessage = {
 			role: "user",
 			content: userText,
 		};
 
+		// 사용자 메시지를 채팅 목록에 추가
 		const updatedMessages = [...messages, userMessage];
 		setMessages(updatedMessages);
 		setIsProcessing(true);
 
-		// AI 응답 생성을 위한 AbortController 설정
-		abortControllerRef.current = new AbortController();
-
 		try {
+			// 사용자 메시지를 서버에 별도로 전송 (로깅 및 분석 목적)
+			await AIService.sendUserMessage(userMessage);
+
+			// AI 응답 생성을 위한 AbortController 설정
+			abortControllerRef.current = new AbortController();
+
+			// AI 응답 요청
 			const aiResponse = await AIService.generateResponse(
-				updatedMessages
+				updatedMessages,
+				abortControllerRef.current.signal
 			);
 
+			// AI 응답을 채팅 목록에 추가
 			setMessages((prev) => [...prev, aiResponse]);
+
+			// 스크롤 자동으로 맨 아래로 이동
+			setTimeout(scrollToBottom, 100);
 		} catch (error) {
 			console.error("AI 응답 생성 중 오류:", error);
+			// 오류 발생 시 사용자에게 알림
+			setMessages((prev) => [
+				...prev,
+				{
+					role: "assistant",
+					content:
+						"죄송합니다. 응답을 생성하는 중에 문제가 발생했습니다. 다시 시도해주세요.",
+				},
+			]);
 		} finally {
 			setIsProcessing(false);
 		}
@@ -194,7 +267,6 @@ const ChattingScreen = ({ className, onBackClick }) => {
 					{messages.map((message, index) => (
 						<ChatMessage key={index} message={message} />
 					))}
-					{/* messagesEndRef는 유지하되, 화면이 활성화되었을 때만 scrollIntoView가 실행되도록 수정됨 */}
 					<div ref={messagesEndRef} />
 				</div>
 

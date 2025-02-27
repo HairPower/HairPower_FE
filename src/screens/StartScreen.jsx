@@ -3,7 +3,7 @@ import "./StartScreen.css";
 
 const StartScreen = ({ className, onStartClick }) => {
 	const [text, setText] = useState("");
-	const fullText = "Upload your file and see the magic happen";
+	const fullText = "나다운 헤어스타일 , AI가 함께 고민합니다.";
 	const [index, setIndex] = useState(0);
 	const [showCursor, setShowCursor] = useState(true);
 
@@ -32,6 +32,7 @@ const StartScreen = ({ className, onStartClick }) => {
 		<div className={className}>
 			<div className="start-container">
 				<div className="start-content">
+					<img src="img/logo.jpeg"></img>
 					<h1>HairPower</h1>
 					<p className="typing-text">
 						{text}

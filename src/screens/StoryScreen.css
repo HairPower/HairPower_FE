@@ -1,44 +1,60 @@
-.story-screen {
-	position: absolute;
+.story-overlay {
+	position: fixed; /* Fixed positioning to cover the entire viewport */
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: rgba(0, 0, 0, 0.8);
-	z-index: 100;
-	transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
-}
-
-.story-container {
-	width: 90%;
-	max-width: 400px;
-	height: 80%;
-	max-height: 700px;
-	border-radius: 12px;
+	z-index: 1000; /* High z-index to ensure it's on top of other content */
 	overflow: hidden;
 }
-
-.close-button {
-	position: absolute;
-	top: 20px;
-	right: 20px;
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
-	background-color: rgba(255, 255, 255, 0.2);
-	color: white;
-	font-size: 24px;
-	border: none;
-	cursor: pointer;
+.story-overlay {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	transition: background-color 0.3s;
+	height: 100vh;
+	width: 100vw;
+	padding: 20px;
+	box-sizing: border-box;
+}
+/* Ensure full height in the parent container */
+
+.story-screen-container {
+	width: 100%;
+	max-width: 500px;
+	height: 80vh; /* Consistent height */
+	max-height: 800px; /* Optional: set a max height */
 }
 
-.close-button:hover {
-	background-color: rgba(255, 255, 255, 0.3);
+.story-overlay .story-screen-container {
+	background-color: white;
+	border-radius: 16px;
+	max-width: 90%;
+	max-height: 90%;
+	width: 600px;
+	overflow-y: auto;
+	position: relative;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	animation: slideUp 0.3s ease-out;
+}
+
+/* Optional: Close button for the overlay */
+.story-overlay .close-button {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	background: none;
+	border: none;
+	font-size: 24px;
+	cursor: pointer;
+	z-index: 1100;
+}
+
+.markdown-content {
+	position: absolute;
+	top: 0px;
+	z-index: 10001;
 }
