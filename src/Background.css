@@ -39,14 +39,3 @@ html {
 	height: 100%;
 	object-fit: cover;
 }
-
-/* 백그라운드 위에 놓이는 콘텐츠에 대한 스타일 */
-.content-container {
-	position: relative;
-	z-index: 1;
-}
-
-/* 앱 전체에 적용될 기본 배경색 (SVG가 로드되기 전 또는 오류 시) */
-body {
-	background-color: #f9f5f0; /* 요청한 배경색과 일치하게 설정 */
-}

@@ -6,6 +6,9 @@
 	overflow: hidden;
 }
 /* body와 html에도 overflow 제한을 설정해 보세요 */
+body {
+	background-color: #f9f5f0; /* 요청한 배경색과 일치하게 설정 */
+}
 html,
 body {
 	margin: 0;

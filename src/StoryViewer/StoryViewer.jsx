@@ -139,12 +139,12 @@ const StoryViewer = ({ stories, onComplete }) => {
 			{/* 스토리 콘텐츠 */}
 			<div className="story-content">
 				<ReactMarkdown>{currentStory.content}</ReactMarkdown>
+				<SamplePhoto
+					imgUrl={
+						currentStory.imgUrl != null ? currentStory.imgUrl : null
+					}
+				/>
 			</div>
-			<SamplePhoto
-				imgUrl={
-					currentStory.imgUrl != null ? currentStory.imgUrl : null
-				}
-			/>
 		</div>
 	);
 };

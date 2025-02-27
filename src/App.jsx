@@ -104,79 +104,66 @@ function App() {
 	};
 
 	const handleSubmit = async () => {
-		if (!file || isTransitioning) {
-			// 제출 조건 확인 (파일 존재 및 전환 중이 아님)
-			console.warn("제출 조건 미충족", {
-				fileExists: !!file,
-				isNotTransitioning: !isTransitioning,
-			});
-			return;
-		}
+		if (!file || isTransitioning) return;
+
 		goToLoading();
 		setError(null);
 		setIsTransitioning(true);
 
 		try {
 			const formData = new FormData();
-			formData.append("photo", file);
 			formData.append("gender", toggleValue ? "female" : "male");
+			formData.append("photo", file);
 
-			console.log("API 요청 시작");
-			// const response = await fetch("/api/user/upload-photo", {
-			// 	method: "POST",
-			// 	body: formData,
-			// });
+			console.log("전송할 데이터:", {
+				file: file.name,
+				gender: toggleValue ? "female" : "male",
+			});
 
-			// //const responseText = await response.text();
-
-			// const isSuccessStatus =
-			// 	response.status >= 200 && response.status < 300;
-
-			// if (!isSuccessStatus) {
-			// 	throw new Error(
-			// 		data?.message || `오류 코드: ${response.status}`
-			// 	);
-			// }
-			// 응답이 비어있지 않은 경우에만 JSON으로 파싱
-
-			let responseText =
-				'{"userId": 37,"gender": "male", "imageUrl": "https://hairpower12.s3.ap-northeast-2.amazonaws.com/1740615464044_%E1%84%83%E1%85%A1%E1%84%8B%E1%85%AE%E1%86%AB%E1%84%85%E1%85%A9%E1%84%83%E1%85%B3.jpeg","userFeatures": ["세모형","짧은 코","긴 턱","짧은 얼굴"]}';
-
-			if (responseText) {
-				try {
-					data = JSON.parse(responseText);
-				} catch (parseError) {
-					console.error("JSON 파싱 오류:", parseError);
-					console.log("서버 응답 내용:", responseText);
-					throw new Error(
-						"서버에서 유효하지 않은 응답 형식을 반환했습니다."
-					);
+			const response = await fetch(
+				"http://54.180.120.177:8080/user/upload-photo",
+				{
+					method: "POST",
+					body: formData,
+					// 네트워크 디버깅을 위한 추가 옵션
+					mode: "cors",
+					credentials: "same-origin",
 				}
-			} else {
-				throw new Error("서버에서 빈 응답을 반환했습니다.");
+			);
+
+			console.log("서버 응답 상태:", response.status);
+
+			if (!response.ok) {
+				// 서버 응답 본문 로깅
+				const errorText = await response.text();
+				console.error("서버 에러 응답:", errorText);
+
+				throw new Error(
+					`HTTP error! status: ${response.status}, message: ${errorText}`
+				);
 			}
+
+			const data = await response.json();
+			console.log("서버 응답 데이터:", data);
 
 			setSubmissionResult(data);
 			setUserFeatures(data.userFeatures);
 
 			setIsTransitioning(false);
-			getScreenClass("result");
 			transitionToResult();
 
 			setTimeout(() => {
 				openStory();
 			}, 1700);
 		} catch (err) {
-			// 오류 처리
-			console.error("업로드 오류:", err);
+			console.error("전체 업로드 오류:", err);
+			console.error("오류 타입:", err.name);
+			console.error("오류 메시지:", err.message);
+
 			setError(err.message || "서버와 통신 중 오류가 발생했습니다.");
 
-			// 전환 상태 해제
 			setIsTransitioning(false);
-			// 업로드 화면으로 돌아가기
-			setTimeout(() => {
-				resetUpload();
-			}, 100);
+			setTimeout(resetUpload, 100);
 		}
 	};
 

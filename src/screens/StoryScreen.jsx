@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import Background from "../Background";
 import StoryViewer from "../StoryViewer/StoryViewer";
 import ss from "../response.json";
 import "./StoryScreen.css";
@@ -72,7 +73,20 @@ const extractDataField = (data, fieldName, defaultValue = "데이터 없음") =>
 	// Try to access the field if data is an object using getSafe
 	return getSafe(data, fieldName, defaultValue);
 };
-const imageFileNames = ["숏얼.png", "숏코.png", "숏이.png"];
+const imageFileNames = [
+	"숏얼",
+	"롱얼",
+	"숏코",
+	"롱코",
+	"숏이",
+	"롱이",
+	"숏턱",
+	"롱턱",
+	"숏미",
+	"롱미",
+	"세형",
+	"네형",
+];
 const images = import.meta.glob("../../img/Memoticon/*.{png,jpg,jpeg,svg}");
 const photoResult = (subtext) => {
 	switch (subtext) {
@@ -80,6 +94,26 @@ const photoResult = (subtext) => {
 			return 0;
 		case "긴 얼굴":
 			return 1;
+		case "짧은 코":
+			return 2;
+		case "긴 코":
+			return 3;
+		case "짧은 이마":
+			return 4;
+		case "긴 이마":
+			return 5;
+		case "짧은 턱":
+			return 6;
+		case "긴 턱":
+			return 7;
+		case "짧은 미간":
+			return 8;
+		case "긴 미간":
+			return 9;
+		case "세모형":
+			return 10;
+		case "네모형":
+			return 11;
 	}
 };
 
@@ -110,8 +144,10 @@ const StoryScreen = ({
 		for (let i = 1; i < totalPages - 1; i++) {
 			end.push({
 				id: i + 1,
-				content: `## 특징 ${i}`,
-				img: images[photoResult(userFeatures[i - 1])],
+				content: `##### 당신의 유형은? : \n ${userFeatures[i - 1]}`,
+				imgUrl: `../../img/memoticon/${
+					imageFileNames[photoResult(userFeatures[i - 1])]
+				}.png`,
 			});
 		}
 		end.push({
@@ -124,6 +160,7 @@ const StoryScreen = ({
 	return (
 		<div className={className || "story-screen"}>
 			<div className="story-screen-container">
+				<Background />
 				<StoryViewer
 					stories={stories}
 					onBackClick={onBackClick}
