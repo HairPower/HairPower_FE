@@ -56,35 +56,6 @@
 	margin: 0 auto;
 }
 
-/* 제목 스타일 */
-.story-content h1 {
-	font-size: 2rem;
-	font-weight: 700;
-	color: #2c3e50;
-	margin-top: 2rem;
-	margin-bottom: 1rem;
-	border-bottom: 2px solid #eaecef;
-	padding-bottom: 0.5rem;
-}
-
-.story-content h2 {
-	font-size: 1.6rem;
-	font-weight: 700;
-	color: #2c3e50;
-	margin-top: 1.8rem;
-	margin-bottom: 0.8rem;
-	border-bottom: 1px solid #eaecef;
-	padding-bottom: 0.3rem;
-}
-
-.story-content h3 {
-	font-size: 1.3rem;
-	font-weight: 600;
-	color: #2c3e50;
-	margin-top: 1.5rem;
-	margin-bottom: 0.6rem;
-}
-
 /* 이모지 및 특수 아이콘 스타일 */
 .story-content .emoji {
 	display: inline-block;
@@ -170,3 +141,104 @@
 	margin: 1.5rem 0;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
+
+.story-content > *:nth-child(1) {
+	color: #2c3e50;
+	font-size: 0.7em;
+	font-weight: 600;
+	margin-bottom: 0.1rem;
+	margin-left: 1rem;
+}
+
+.story-content > *:nth-child(3) {
+	color: #2c3e50;
+	font-size: 0.7em;
+	font-weight: 600;
+	margin-bottom: 0.1rem;
+	margin-left: 1rem;
+}
+.story-content > *:nth-child(4) {
+	padding-top: 0.2em;
+	border-top: solid 1px #2c3e50;
+	font-size: 1em;
+	font-weight: 700;
+	color: #2c3e50;
+	margin-top: 1.8rem;
+	margin-bottom: 0.8rem;
+	padding-bottom: 0.3rem;
+}
+
+.story-content > *:nth-child(5) {
+	color: #3498db;
+	font-size: 0.7em;
+	font-weight: 500;
+	margin-bottom: 0.2em;
+	margin-left: 0.2em;
+}
+.story-content > *:nth-child(6) {
+	color: #3498db;
+	font-size: 0.65em;
+	font-weight: 500;
+	margin-bottom: 0.2em;
+	margin-left: 0.2em;
+}
+.story-content > *:nth-child(7) {
+	padding-top: 0.2em;
+	border-top: solid 1px #2c3e50;
+	font-size: 1em;
+	font-weight: 700;
+	color: #2c3e50;
+	margin-top: 1.8rem;
+	margin-bottom: 0.8rem;
+	padding-bottom: 0.3rem;
+}
+.story-content > *:nth-child(8) {
+	color: #2c3e50;
+	font-size: 0.7em;
+	font-weight: 500;
+	margin-bottom: 0.2em;
+	margin-left: 0.2em;
+}
+.story-content > *:nth-child(9) {
+	color: #2c3e50;
+	font-size: 0.7em;
+	font-weight: 500;
+	margin-bottom: 0.2em;
+	margin-left: 0.2em;
+}
+
+.story-content > *:nth-child(10) {
+	padding-top: 0.2em;
+	border-top: solid 1px #2c3e50;
+	font-size: 1em;
+	font-weight: 700;
+	color: #2c3e50;
+	margin-top: 1.8rem;
+	margin-bottom: 0.8rem;
+	padding-bottom: 0.3rem;
+}
+.story-content > *:nth-child(11) {
+	color: #2c3e50;
+	font-size: 0.7em;
+	font-weight: 500;
+	margin-bottom: 0.2em;
+	margin-left: 0.2em;
+}
+/* 제목 스타일
+.story-content h1 {
+	font-size: 2rem;
+	font-weight: 700;
+	color: #2c3e50;
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+	padding-bottom: 0.5rem;
+}
+
+.story-content h2 {
+	font-size: 1.6rem;
+	font-weight: 700;
+	color: #2c3e50;
+	margin-top: 1.8rem;
+	margin-bottom: 0.8rem;
+	padding-bottom: 0.3rem;
+} */

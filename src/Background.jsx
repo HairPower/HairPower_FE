@@ -1,4 +1,4 @@
-import "./background.css"; // 스타일을 별도 CSS 파일로 분리
+import "./Background.css"; // 스타일을 별도 CSS 파일로 분리
 
 function Background() {
 	return (
