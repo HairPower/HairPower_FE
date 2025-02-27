@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import SamplePhoto from "./SamplePhoto";
 import "./StoryViewer.css";
 
 const StoryViewer = ({ stories, onComplete }) => {
@@ -139,6 +140,11 @@ const StoryViewer = ({ stories, onComplete }) => {
 			<div className="story-content">
 				<ReactMarkdown>{currentStory.content}</ReactMarkdown>
 			</div>
+			<SamplePhoto
+				imgUrl={
+					currentStory.imgUrl != null ? currentStory.imgUrl : null
+				}
+			/>
 		</div>
 	);
 };

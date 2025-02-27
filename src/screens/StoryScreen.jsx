@@ -72,67 +72,54 @@ const extractDataField = (data, fieldName, defaultValue = "데이터 없음") =>
 	// Try to access the field if data is an object using getSafe
 	return getSafe(data, fieldName, defaultValue);
 };
+const imageFileNames = ["숏얼.png", "숏코.png", "숏이.png"];
+const images = import.meta.glob("../../img/Memoticon/*.{png,jpg,jpeg,svg}");
+const photoResult = (subtext) => {
+	switch (subtext) {
+		case "짧은 얼굴":
+			return 0;
+		case "긴 얼굴":
+			return 1;
+	}
+};
 
-const StoryScreen = ({ className, onBackClick, onComplete, analysisData }) => {
+const StoryScreen = ({
+	className,
+	onBackClick,
+	onComplete,
+	analysisData,
+	userFeatures,
+}) => {
 	// Generate stories dynamically based on analysis data
 	const stories = useMemo(() => {
 		// Ensure analysisData is not null or undefined
 		const data = analysisData || {};
 		console.log("Raw analysis data:", data);
-
+		const totalPages = userFeatures ? userFeatures.length + 2 : 1;
 		// Define a default markdown for the first story
-		const rawMarkdown =
-			"# 분석 보고서\n\n이 보고서는 제공된 데이터를 기반으로 생성되었습니다.";
-
 		// Try to decode any markdown content if it exists
 		const decodedData =
 			typeof data === "string" ? decodeMarkdown(data) : data;
 		console.log("Decoded data:", decodedData);
-
-		// Extract specific fields with fallbacks using getSafe
-		const basicInfo = getSafe(
-			decodedData,
-			"basicInfo",
-			"기본 정보가 제공되지 않았습니다."
-		);
-		const detailedAnalysis = getSafe(
-			decodedData,
-			"detailedAnalysis",
-			"상세 분석 데이터가 없습니다."
-		);
-		const reliability = getSafe(
-			decodedData,
-			"reliability",
-			"신뢰도 정보가 없습니다."
-		);
-		const recommendations = getSafe(
-			decodedData,
-			"recommendations",
-			"추천 사항이 없습니다."
-		);
-		return [
+		const end = [
 			{
 				id: 1,
 				content: ss.content.text,
 			},
-			{
-				id: 2,
-				content: `## 기본 정보\n\n${basicInfo}`,
-			},
-			{
-				id: 3,
-				content: `## 상세 분석\n\n${detailedAnalysis}\n\n**신뢰도**: ${reliability}`,
-			},
-			{
-				id: 4,
-				content: `## 추천 사항\n\n${recommendations}`,
-			},
-			{
-				id: 5,
-				content: `# 분석 완료\n\n스토리 보기를 완료했습니다.\n결과 페이지로 돌아갑니다.`,
-			},
 		];
-	}, [analysisData]);
+		for (let i = 1; i < totalPages - 1; i++) {
+			end.push({
+				id: i + 1,
+				content: `## 특징 ${i}`,
+				img: images[photoResult(userFeatures[i - 1])],
+			});
+		}
+		end.push({
+			id: 5,
+			content: `# 분석 완료\n\n스토리 보기를 완료했습니다.\n결과 페이지로 돌아갑니다.`,
+		});
+		return end;
+	});
 
 	return (
 		<div className={className || "story-screen"}>

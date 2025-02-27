@@ -15,6 +15,7 @@ function App() {
 	const [transitionDirection, setTransitionDirection] = useState("forward");
 	const [isTransitioning, setIsTransitioning] = useState(false);
 	const [submissionResult, setSubmissionResult] = useState(null);
+	const [userFeatures, setUserFeatures] = useState(null);
 	const [error, setError] = useState(null);
 
 	// 스토리 화면 표시 여부
@@ -143,7 +144,6 @@ function App() {
 
 			if (responseText) {
 				try {
-					console.log(JSON.parse(responseText));
 					data = JSON.parse(responseText);
 				} catch (parseError) {
 					console.error("JSON 파싱 오류:", parseError);
@@ -156,8 +156,8 @@ function App() {
 				throw new Error("서버에서 빈 응답을 반환했습니다.");
 			}
 
-			console.log("API 응답 데이터:", data);
 			setSubmissionResult(data);
+			setUserFeatures(data.userFeatures);
 
 			setIsTransitioning(false);
 			getScreenClass("result");
@@ -260,6 +260,7 @@ function App() {
 					onBackClick={closeStory}
 					onComplete={handleStoryComplete}
 					analysisData={submissionResult}
+					userFeatures={userFeatures}
 				/>
 			)}
 		</div>
