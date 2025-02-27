@@ -102,7 +102,6 @@ function App() {
 			}
 		}, 1000); // 1-second delay as requested
 	};
-
 	const handleSubmit = async () => {
 		if (!file || isTransitioning) return;
 
@@ -113,7 +112,7 @@ function App() {
 		try {
 			const formData = new FormData();
 			formData.append("gender", toggleValue ? "female" : "male");
-			formData.append("photo", file);
+			formData.append("image", file); // ✅ 'photo' → 'image'로 변경
 
 			console.log("전송할 데이터:", {
 				file: file.name,
@@ -125,7 +124,6 @@ function App() {
 				{
 					method: "POST",
 					body: formData,
-					// 네트워크 디버깅을 위한 추가 옵션
 					mode: "cors",
 					credentials: "same-origin",
 				}
@@ -134,10 +132,8 @@ function App() {
 			console.log("서버 응답 상태:", response.status);
 
 			if (!response.ok) {
-				// 서버 응답 본문 로깅
 				const errorText = await response.text();
 				console.error("서버 에러 응답:", errorText);
-
 				throw new Error(
 					`HTTP error! status: ${response.status}, message: ${errorText}`
 				);

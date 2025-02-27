@@ -3,22 +3,22 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import "./ChattingScreen.css";
 
 // API 기본 설정
-const API_BASE_URL = "https://your-backend-api.com"; // 실제 백엔드 API URL로 변경해주세요
+const API_BASE_URL = "http://54.180.120.177:8080"; // 실제 백엔드 API URL로 변경해주세요
 
 // AI 서비스 인터페이스
 const AIService = {
 	async generateResponse(messages, signal) {
 		try {
 			// 실제 API 호출
-			const response = await fetch(`${API_BASE_URL}/api/chat`, {
+			const response = await fetch(`${API_BASE_URL}/chat/ask-ai`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({
-					messages: messages,
-				}),
-				signal: signal, // AbortController의 signal을 전달하여 요청 취소 기능 구현
+				body: {
+					user_id: 26,
+					message: "DD",
+				},
 			});
 
 			if (!response.ok) {
@@ -44,37 +44,6 @@ const AIService = {
 
 			console.error("API 요청 중 오류 발생:", error);
 			throw error;
-		}
-	},
-
-	// 사용자 메시지 전송 함수 추가
-	async sendUserMessage(userMessage) {
-		try {
-			// 사용자 메시지만 별도로 서버에 기록
-			const response = await fetch(`${API_BASE_URL}/api/user-messages`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					message: userMessage.content,
-					timestamp: new Date().toISOString(),
-					// 필요시 사용자 식별 정보 추가
-					// userId: "user-id",
-					// sessionId: "session-id"
-				}),
-			});
-
-			if (!response.ok) {
-				throw new Error(`사용자 메시지 전송 실패: ${response.status}`);
-			}
-
-			const data = await response.json();
-			console.log("사용자 메시지 전송 성공:", data);
-			return true;
-		} catch (error) {
-			console.error("사용자 메시지 전송 중 오류:", error);
-			return false;
 		}
 	},
 };

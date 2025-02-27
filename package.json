@@ -31,5 +31,5 @@
     "vite": "^6.2.0"
   },
   "start": "PORT=8080 react-scripts start",
-  "proxy": "http://localhost:8080"
+  "proxy": "http://54.180.120.177:8080"
 }
